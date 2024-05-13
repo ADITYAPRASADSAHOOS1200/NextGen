@@ -1,12 +1,12 @@
 import { connectMongoDb } from "./src/Connection/index.js";
 import app from "./app.js";
 import 'dotenv/config';
-import { DB_NAME } from "./src/Constants/DB_NAME.js";
+// import { DB_NAME } from "./src/Constants/DB_NAME.js";
 
 const PORT = process.env.PORT || 5000;
 
 // Construct the MongoDB URI properly
-const MONGO_URI = `${process.env.MONGO_URI}/${DB_NAME}`;
+const MONGO_URI =process.env.MONGO_URL
 
 connectMongoDb(MONGO_URI)
   .then(() => {
