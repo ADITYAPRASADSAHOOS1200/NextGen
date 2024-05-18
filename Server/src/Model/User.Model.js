@@ -45,9 +45,11 @@ const UserSchema = new Schema({
     },
 
     forgetPasswordToken: String,
-
-    forgetPasswordExpiry: Date,
-    
+   forgetPasswordExpiry: Date,
+    subscription:{
+        id:String,
+        status:String,
+    },
     role: {
         type: String,
         enum: ['USER', 'ADMIN'],
@@ -87,6 +89,9 @@ UserSchema.methods.comparePassword = async function (plainTextPassword) {
     return bcrypt.compare(plainTextPassword, this.password)
 
 }
+
+
+
 
 
 

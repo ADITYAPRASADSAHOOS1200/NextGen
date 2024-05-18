@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import fs from "fs";
+import Razorpay from 'razorpay';
 
 // Configuration
 cloudinary.config({ 
@@ -7,6 +8,14 @@ cloudinary.config({
     api_key: process.env.API_KEY, 
     api_secret: process.env.APP_SECRET 
 });
+
+
+
+export const  razorpay=new Razorpay({
+   key_id:process.env.RAZORPAY_KEY_ID,
+   key_secret:process.env.Key_SECRET
+})
+
 
 export async function uploadcloudinary(localFilePath) {
     try {
@@ -36,5 +45,24 @@ export async function uploadcloudinary(localFilePath) {
 
         // Return null or error message
         return null;
+    }
+}
+
+
+  export async function deleteCloudinary(localFilePath) {
+    try {
+      
+        // Extract filename without extension
+        const localFile = localFilePath.split('/').pop().split('.')[0];
+        console.log("Local file:", localFile);
+
+        // Delete file from Cloudinary
+        const response = await cloudinary.uploader.destroy(localFile);
+
+        // Log success message
+        console.log(`File ${localFile} deleted successfully from Cloudinary`);
+    } catch (err) {
+        // Log error message
+        console.error(`Failed to delete file from Cloudinary: ${err.message}`);
     }
 }

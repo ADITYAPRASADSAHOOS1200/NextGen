@@ -2,7 +2,7 @@ import { User } from "../Model/User.Model.js";
 import { asyncHandler } from "../Utils/AsyncHandler.js";
 import   AppError  from "../Utils/AppError.js";
 import { ApiResponse } from "../Utils/ApiResponse.js";
-import { uploadcloudinary } from "../Utils/Cloudinary.js";
+import { deleteCloudinary, uploadcloudinary } from "../Utils/Cloudinary.js";
 import { Sendmail } from "../Utils/SendMail.js";
 import crypto from "crypto"
 import bcrypt from "bcrypt"
@@ -21,11 +21,17 @@ const register = asyncHandler(async (req, res, next) => {
     // Extract necessary information from the request body
     const { username, fullname, password, email } = req.body;
 
+    console.log(req.file);
+
     // Check if all required fields are provided
     if (!username || !fullname || !password || !email) {
         // If any required field is missing, return an error response
         return next(new AppError(400, "All fields are required"));
     }
+
+
+
+
 
     try {
         // Check if the email is already registered
@@ -64,6 +70,11 @@ const register = asyncHandler(async (req, res, next) => {
                 secure_Url: avatar?.url
             }
         });
+
+        
+
+
+
 
         // Send a success response with the newly created user data
         const userWithoutPassword = { ...newUser.toObject(), password: undefined };
@@ -230,8 +241,8 @@ const resetpassword = asyncHandler(async (req, res, next) => {
         }
 
         // Update user's password and reset token fields
-        user.password = await bcrypt.hash(password, 10); // Hash the new password
-        console.log(user.password);
+
+        user.password = password; // Hash the new password
         user.forgetPasswordExpiry = undefined;
         user.forgetPasswordToken = undefined;
 
@@ -243,9 +254,98 @@ const resetpassword = asyncHandler(async (req, res, next) => {
         });
     } catch (error) {
         console.error('Error resetting password:', error);
-        return next(new AppError(500, 'Internal server error.'));
+        return next(new AppError(500, 'Internal server error!!!'));
     }
 });
+
+
+const changepassword = asyncHandler(async (req, res, next) => {
+    try {
+        const { oldPassword, newPassword } = req.body;
+
+        if (!oldPassword || !newPassword) {
+            return next(new AppError(400, "Old password and new password are required."));
+        }
+
+        if (oldPassword === newPassword) {
+            return next(new AppError(400, "New password must be different from the old password."));
+        }
+
+        const { _id } = req.user;
+
+        const user = await User.findById(_id);
+
+        if (!user) {
+            return next(new AppError(400, "User not found."));
+        }
+
+        const isvalid=await user.comparePassword(oldPassword)
+      
+        if(!isvalid){
+            return next(new AppError(200,"password is not valid"))
+        }
+        // Update user's password
+        user.password = newPassword;
+        await user.save();
+
+        user.password = undefined;
+
+        return res.status(200).json(
+            new ApiResponse(200, user, "Password changed successfully.")
+        );
+    } catch (error) {
+        return next(new AppError(400, error.message || "Password cannot be updated."));
+    }
+});
+
+
+
+const updateUser = asyncHandler(async (req, res, next) => {
+    try {
+        const { fullname, username } = req.body;
+
+        if (!fullname || !username) {
+            return next(new AppError(400, "All fields are required"));
+        }
+
+        const prevUser = await User.findById(req.user?._id);
+
+        if (!prevUser) {
+            return next(new AppError(400, "Previous user not found"));
+        }
+
+        await deleteCloudinary(prevUser.avatar.secure_Url);
+
+        
+        const avatarFile = req.file?.path;
+        const Avatar = await uploadcloudinary(avatarFile);
+
+        if (!Avatar.url) {
+            return next(new AppError(400, "Avatar URL not found"));
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: req.user?._id }, // Query condition
+            { 
+                $set: {
+                    fullname: fullname,
+                    username: username,
+                    avatar: { secure_Url: Avatar.url } // Corrected syntax for avatar
+                } 
+            },
+            { new: true } // To return the modified document instead of the original
+        ).select("-password");
+
+        return res.status(200).json(
+            new ApiResponse(200, updatedUser, "User updated successfully")
+        );
+
+    } catch (err) {
+        return next(new AppError(400, err?.message || "An error occurred while updating user information"));
+    }
+});
+
+
 
 
 
@@ -256,4 +356,8 @@ export {
     getUser,
     forgetPassword,
     resetpassword,
+    changepassword,
+    updateUser,
 }
+
+

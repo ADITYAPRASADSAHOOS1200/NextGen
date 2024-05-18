@@ -15,7 +15,7 @@ export const Authorisaton = asyncHandler(async (req, res, next) => {
         
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const user = await User.findById(decodedToken?._id).select("-password ");
-        console.log("userToken",user);
+      
 
         if (!user) {
 
@@ -30,4 +30,22 @@ export const Authorisaton = asyncHandler(async (req, res, next) => {
     }
     
 });
+
+
+
+export const authorisedRoles=(...roles)=>asyncHandler(async(req,res,next)=>{
+
+    console.log(req.user);
+    const Currentuserrole=req.user.role;
+
+    if(!roles.includes(Currentuserrole)){
+       return next(
+         new AppError("You do not have access the permission of the route")
+       )
+    }
+    next();
+
+})
+
+
 
