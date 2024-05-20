@@ -1,1 +1,1 @@
-export const DB_NAME='Course'
+export const DB_NAME='LMS'

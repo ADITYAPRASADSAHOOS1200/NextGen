@@ -7,7 +7,7 @@ import {
   allPayments,
 } from '../Controllers/Payment.controller.js';
 
-import { Authorisaton } from '../Middeware/Authorisation.js';
+import { Authorisaton,authorisedRoles} from '../Middeware/Authorisation.js';
 
 const router = Router();
 
@@ -17,6 +17,6 @@ router
   .route('/unsubscribe')
   .post(Authorisaton, cancelSubscription);
 router.route('/razorpay-key').get(Authorisaton, getRazorpayApiKey);
-router.route('/').get(Authorisaton, authorizeRoles('ADMIN'), allPayments);
+router.route('/').get(Authorisaton, authorisedRoles('ADMIN'), allPayments);
 
 export default router;

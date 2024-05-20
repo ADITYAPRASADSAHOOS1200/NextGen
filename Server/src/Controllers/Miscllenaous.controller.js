@@ -1,8 +1,7 @@
-import asyncHandler from '../middlewares/asyncHandler.middleware.js';
+import { asyncHandler } from '../Utils/AsyncHandler.js';
 import { User } from '../Model/User.Model.js';
-import AppError from '../utils/AppError.js';
-import sendEmail from '../utils/sendEmail.js';
-
+import AppError from '../Utils/AppError.js';
+import { Sendmail } from '../Utils/SendMail.js';
 
 export const contactUs = asyncHandler(async (req, res, next) => {
   // Destructuring the required data from req.body
@@ -30,11 +29,7 @@ export const contactUs = asyncHandler(async (req, res, next) => {
   });
 });
 
-/**
- * @USER_STATS_ADMIN
- * @ROUTE @GET {{URL}}/api/v1/admin/stats/users
- * @ACCESS Private(ADMIN ONLY)
- */
+
 export const userStats = asyncHandler(async (req, res, next) => {
   const allUsersCount = await User.countDocuments();
 

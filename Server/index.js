@@ -6,7 +6,7 @@ import 'dotenv/config';
 const PORT = process.env.PORT || 5000;
 
 // Construct the MongoDB URI properly
-const MONGO_URI =process.env.MONGO_URL
+const MONGO_URI =process.env.MONGO_URI
 
 connectMongoDb(MONGO_URI)
   .then(() => {

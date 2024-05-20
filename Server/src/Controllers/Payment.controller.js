@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import asyncHandler from '../Utils/AsyncHandler.js';
+import{ asyncHandler }from '../Utils/AsyncHandler.js';
 import { User } from "../Model/User.Model.js";
 import AppError from '../Utils/AppError.js';
 import {Payment } from '../Model/Payment.model.js';
