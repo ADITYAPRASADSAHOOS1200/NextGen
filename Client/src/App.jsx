@@ -1,12 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
+import {Routes,Route} from 'react-router-dom'
+
+import HomePage from './Pages/HomePage'
 
 function App() {
+
+  
   
   return (
-    <>
-      lms
-    </>
+    
+    <Routes>
+     <Route path="/" element={<HomePage/>}/>
+    </Routes>
+ 
+    
   )
 }
 
