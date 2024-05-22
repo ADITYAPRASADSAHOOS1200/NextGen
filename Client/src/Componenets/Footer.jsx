@@ -9,7 +9,7 @@ const Footer = () => {
 
 
   return (
-    <footer className='relative left-0 bottom-0 h-[10vh]  z-50 flex w-full flex-col sm:flex-row items-center py-4 justify-between text-white bg-gray-800 sm:px-10 '>
+    <footer className='relative   h-[8vh] w-[100vw]  p-10   flex  flex-row  items-center  justify-between text-white bg-gray-800  '>
     <section className='text-xl'>
        Copyright @ {year} | All rights reserved . 
     </section>
