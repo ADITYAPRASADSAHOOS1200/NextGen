@@ -4,6 +4,8 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { Link,useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux'
 import Footer from '../Componenets/Footer';
+import { Logout } from '../Redux/Slices/Authslice';
+
 
 
 const HomeLayout = ({children}) => {
@@ -27,10 +29,10 @@ const Role=useSelector(state=>state?.auth?.role)
   };
 
 
-  const handleLogOut = (e) => {
+  const handleLogOut =async (e) => {
     e.preventDefault();
     
-   // const res=await dispatch(logout())
+   const res=await dispatch(Logout())
 
     navigate("/")
   }
@@ -88,10 +90,10 @@ const Role=useSelector(state=>state?.auth?.role)
                   <li className='absolute bottom-4 w-[90%]'>
                         <div className='w-full  flex items-center justify-center'>
                     <button className='btn-primary text-white color ring-1 ring-blue-600 mr-2 px-4 py-1 font-semibold rounded-md w-full'>
-                      <Link to="/login">login</Link>
+                      <Link to="/Signin">login</Link>
                     </button>
                     <button className='btn-secondary text-white px-4 ring-1 ring-yellow-600  py-1 font-semibold rounded-md w-full'>
-                      <Link to="/logout">logout</Link>
+                      <Link onClick={handleLogOut}>logout</Link>
                     </button>
                 </div>
                   </li>
@@ -105,7 +107,7 @@ const Role=useSelector(state=>state?.auth?.role)
                       <Link to="/Profile">Profile</Link>
                     </button>
                     <button className='btn-secondary text-white px-4 ring-1 ring-yellow-600  py-1 font-semibold rounded-md w-full' onClick={handleLogOut}>
-                      <Link to="/logout">logout</Link>
+                      <Link onClick={handleLogOut}>logout</Link>
                     </button>
                 </div>
                   </li>
