@@ -6,7 +6,7 @@ import image1 from "../assets/Images/Main2.png"
 const HomePage = () => {
   return (
    <HomeLayout>
-     <section className=' text-white flex justify-center items-center gap-10 mx-10 h-[90vh] pl-20 '>
+     <section className=' text-white flex justify-center items-center gap-10 mx-10 h-[100vh] pl-20 '>
         <div className="w-1/2 space-y-6 " >
          <h1 className='text-5xl font-semibold'>FIND OUT BEST
           <span className='text-yellow-500 text-5xl font-semibold'>

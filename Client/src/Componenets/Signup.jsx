@@ -71,8 +71,6 @@ const Signup = () => {
 
 
 
-
-
   function handleUserInput(e) {
     const { name, value } = e.target;
     setSignupdata({
