@@ -1,10 +1,11 @@
 import { buildCreateSlice, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../Helpers/axiosinstance";
 import toast from "react-hot-toast";
+import { act } from "react";
 
 
 const   initialState={
-     course:[]
+     coursedata:[]
 }
 
 
@@ -33,6 +34,14 @@ const courseSlice=createSlice({
    initialState,
    reducers:{},
    extraReducers:(builder)=>{
+    builder
+    .addCase(getAllcourse.fulfilled,(state,action)=>{
+          if(action?.payload){
+          console.log(action.payload);
+
+            state.coursedata=[...action.payload]
+          }
+    })
      
    }
 })

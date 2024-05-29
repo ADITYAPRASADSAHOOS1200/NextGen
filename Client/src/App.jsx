@@ -7,6 +7,7 @@ import Signup from './Componenets/Signup'
 import Signin from './Componenets/Signin'
 import Aboutus from './Componenets/Aboutus'
 import PageNotfound from './Componenets/PageNotfound'
+import Courselist from './Course/Courselist'
 function App() {
 
   
@@ -18,6 +19,7 @@ function App() {
      <Route path="/Signup" element={<Signup/>}/>
      <Route path="/Signin" element={<Signin/>}/>
      <Route path="/About" element={<Aboutus/>}/>
+     <Route path="/courses" element={<Courselist/>}/>
      <Route path="*" element={<PageNotfound/>}/>
     </Routes>
  
